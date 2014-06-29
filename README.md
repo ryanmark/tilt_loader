@@ -1,7 +1,7 @@
 # Tilt Loader
 
 The goal of this gem is to provide a consistent API and solve common problems
-around loading organizing and loading templates.
+around loading and organizing templates.
 
 I've seen a few ruby projects that all implement their own ways for finding
 and loading templates. This gem is meant to be part of the Tilt gem and promote
