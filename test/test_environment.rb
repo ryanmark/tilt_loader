@@ -21,10 +21,12 @@ class TestEnvironment < MiniTest::Unit::TestCase
     end
 
     loader = Tilt::Loader.new do |template|
-      'testing ' + template
+      return 'testing ' + template, template
     end
 
-    assert_equal 'testing foo.html', loader.get_source('foo.html')
+    source, filename = loader.get_source('foo.html')
+    assert_equal 'testing foo.html', source
+    assert_equal 'foo.html', filename.strip
   end
 
   def test_file_system_loader
@@ -36,5 +38,15 @@ class TestEnvironment < MiniTest::Unit::TestCase
         'foo'
       end
     end
+
+    loader = Tilt::FileSystemLoader.new('test/templates')
+
+    source, filename = loader.get_source('test', add_ext: true)
+    assert_equal '<p>templates</p>', source.strip
+    assert_equal File.expand_path("test/templates/test.html"), filename.strip
+
+    source, filename = loader.get_source('header', add_ext: true, add_underscore: true)
+    assert_equal "<h1>Hi I'm a <%= \"header\" %></h1>", source.strip
+    assert_equal File.expand_path("test/templates/_header.html.erb"), filename.strip
   end
 end
